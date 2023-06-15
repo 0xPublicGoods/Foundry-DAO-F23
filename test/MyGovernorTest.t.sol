@@ -26,6 +26,9 @@ contract MyGovernorTest is Test {
 
     address[] proposers;
     address[] executors;
+    uint256[] values;
+    bytes[] calldatas;
+    address[] targets;
 
     function setUp() public {
         govToken = new GovToken();
@@ -53,5 +56,17 @@ contract MyGovernorTest is Test {
     function testCantUpdateBoxWithoutGovernance() public {
         vm.expectRevert();
         box.store(1);
+    }
+
+    function testGovernanceUpdatesBox() public {
+        uint256 valueToStore = 888;
+
+        string memory description = "Store 888 in Box";
+
+        bytes memory encodedFunctionCall = abi.encodeWithSignature("store(uint256)", valueToStore);
+
+        values.push(0);
+        calldatas.push(encodedFunctionCall);
+        targets.push(address(box));
     }
 }
