@@ -18,7 +18,7 @@ contract MyGovernorTest is Test {
     GovToken govToken;
 
     address public USER = makeAddr("user");
-    uint256 public constant INITIAL_SUPPLY = 1000 ether;
+    uint256 public constant INITIAL_SUPPLY = 100e18;
 
     uint256 public constant MIN_DELAY = 3600; // HOW MANY SECONDS UNTIL A PROPOSAL CAN BE EXECUTED
     uint256 public constant VOTING_DELAY = 1; // HOW MANY BLOCKS UNTIL A VOTE IS ACTIVE [1 DAY I THINK]
@@ -27,6 +27,7 @@ contract MyGovernorTest is Test {
 
     address[] proposers;
     address[] executors;
+
     uint256[] values;
     bytes[] calldatas;
     address[] targets;
@@ -69,8 +70,12 @@ contract MyGovernorTest is Test {
         calldatas.push(encodedFunctionCall);
         targets.push(address(box));
 
+        console.log(governor.proposalThreshold());
+
         // populate proposal
+        console.log("proposing");
         uint256 proposalId = governor.propose(targets, values, calldatas, description);
+        console.log("proposing");
 
         // View the State of the Proposal
         console.log("Proposal State: %s", uint256(governor.state(proposalId)));
